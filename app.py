@@ -29,7 +29,7 @@ def webhook():
     res = processRequest(req)
 
     res = json.dumps(res, indent=4)
-    # print(res)
+     print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -38,21 +38,53 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "news.search":
         return {}
-    baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=latest&apiKey=dda1592b3267447193fb1756b5746b0e"
-    
+    baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=dda1592b3267447193fb1756b5746b0e"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
     result = urlopen(baseurl).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
-    print(res)
-    print(data)
+
+
+
+
+
+def makeWebhookResult(data):
+    query = data.get('query')
+    if query is None:
+        return {}
+
+    result = query.get('articles')
+    if result is None:
+        return {}
+
+    channel = result.get('author')
+    if channel is None:
+        return {}
+
+    item = channel.get('title')
+    location = channel.get('description')
+    units = channel.get('url')
+    if (location is None) or (item is None) or (units is None):
+        return {}
+
+
+    # print(json.dumps(item, indent=4))
+
+   
+    speech = " latest news"+channel+"item"+""+location+""+"units"
+
+    print("Response:")
+    print(speech)
 
     return {
         "speech": speech,
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-news-api"
+        "source": "apiai-weather-webhook-sample"
     }
 
 
