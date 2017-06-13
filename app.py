@@ -36,14 +36,10 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") != "yahooWeatherForecast":
+    if req.get("result").get("action") != "news.search":
         return {}
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-    result = urlopen(yql_url).read()
+    baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=latest&apiKey=dda1592b3267447193fb1756b5746b0e"
+    result = urlopen(baseurl).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
@@ -56,8 +52,7 @@ def makeYqlQuery(req):
     if city is None:
         return None
 
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
-
+    
 
 def makeWebhookResult(data):
     query = data.get('query')
@@ -75,9 +70,7 @@ def makeWebhookResult(data):
     item = channel.get('item')
     location = channel.get('location')
     units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
+    
     condition = item.get('condition')
     if condition is None:
         return {}
