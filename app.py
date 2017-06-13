@@ -68,7 +68,7 @@ def makeWebhookResult(data):
     speech = " latest news"+channel+"item"+""+location+""+units
 
 print("Response:")
-    print(speech)
+    #print(speech)
     
     return {
         "speech": speech,
