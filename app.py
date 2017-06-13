@@ -44,16 +44,8 @@ def processRequest(req):
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
-
-
-
-
-
-    
-    speech = " latest news"+channel+"item"+""+location+""+units
-
-    print("Response:")
-    print(speech)
+    print(res)
+    print(data)
 
     return {
         "speech": speech,
