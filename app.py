@@ -67,7 +67,7 @@ def makeWebhookResult(data):
     # print(json.dumps(item, indent=4))
     
     
-    speech = " latest news"+channel+"item"+""+location+""+"units"
+    speech = " latest news"+channel+"item"+""+location+""+units
 
 print("Response:")
     print(speech)
