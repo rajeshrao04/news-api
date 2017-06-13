@@ -1,19 +1,14 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-from future.standard_library import install_aliases
-install_aliases()
-
-from urllib.parse import urlparse, urlencode
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError
-
+import urllib
 import json
 import os
+import time
 
 from flask import Flask
 from flask import request
 from flask import make_response
+from datetime import datetime
 
 # Flask app should start in global layout
 app = Flask(__name__)
@@ -22,81 +17,46 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
-    
+
     print("Request:")
     print(json.dumps(req, indent=4))
-    
-    res = processRequest(req)
-    
+
+    res = makeWebhookResult(req)
+
     res = json.dumps(res, indent=4)
-    # print(res)
+    print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
-
-def processRequest(req):
-    if req.get("result").get("action") != "news.search":
+def makeWebhookResult(req):
+    if req.get("result").get("action") != "time.get":
         return {}
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-
-    result = urlopen(baseurl).read()
-    data = json.loads(result)
-    res = makeWebhookResult(data)
-    return res
-
-
-def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    city = parameters.get("geo-city")
-    if city is None:
-        return None
-    
+    zone = parameters.get("sys.location")
 
-def makeWebhookResult(data):
-    query = data.get('query')
-    if query is None:
-        return {}
-    
-    result = query.get('results')
-    if result is None:
-        return {}
-    
-    channel = result.get('channel')
-    if channel is None:
-        return {}
-    
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-    
-    condition = item.get('condition')
-    if condition is None:
-        return {}
+   // cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
 
-    # print(json.dumps(item, indent=4))
+   // speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
+       localtime = time.localtime(time.time())
+    print "Local current time :", localtime
 
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-        ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
+   // print("Response:")
+   // print(speech)
 
-print("Response:")
-    print(speech)
-    
     return {
         "speech": speech,
         "displayText": speech,
-        # "data": data,
+        #"data": {},
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
-}
+        "source": "apiai-onlinestore-shipping"
+    }
 
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    
-    print("Starting app on port %d" % port)
-    
-    app.run(debug=False, port=port, host='0.0.0.0')
+
+    print "Starting app on port %d" % port
+
+    app.run(debug=True, port=port, host='0.0.0.0')
