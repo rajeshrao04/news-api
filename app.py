@@ -39,16 +39,14 @@ def processRequest(req):
     if req.get("result").get("action") != "news.search":
         return {}
     baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=dda1592b3267447193fb1756b5746b0e"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
+    
     result = urlopen(baseurl).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
 
 
-def makeYqlQuery(req):
+def makebaseurl(req):
     result = req.get("result")
 
 
@@ -75,10 +73,8 @@ def makeWebhookResult(data):
 
     # print(json.dumps(item, indent=4))
 
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
     
-    speech = " latest news"+channel+"item"+""+location+""+"units"
+    speech = " latest news"+channel+"item"+""+location+""+units
 
     print("Response:")
     print(speech)
@@ -88,7 +84,7 @@ def makeWebhookResult(data):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "apiai-news-api"
     }
 
 
