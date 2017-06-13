@@ -48,13 +48,14 @@ def processRequest(req):
     return res
 
 
-def makebaseurl(req):
+def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
     if city is None:
         return None
-def makeWebhookResult(data):
+
+    def makeWebhookResult(data):
     query = data.get('query')
     if query is None:
         return {}
