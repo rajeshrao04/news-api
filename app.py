@@ -45,7 +45,7 @@ def processRequest(req):
     return res
 
 
-def makeYqlQuery(req):
+def makebaseurl(req):
     result = req.get("result")
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
