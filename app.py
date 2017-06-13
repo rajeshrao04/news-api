@@ -38,7 +38,7 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "news.search":
         return {}
-    baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=dda1592b3267447193fb1756b5746b0e"
+    baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=latest&apiKey=dda1592b3267447193fb1756b5746b0e"
     
     result = urlopen(baseurl).read()
     data = json.loads(result)
@@ -52,11 +52,8 @@ def makebaseurl(req):
 
 
 def makeWebhookResult(data):
-    query = data.get('query')
-    if query is None:
-        return {}
-
-    result = query.get('articles')
+    
+    result = data.get('articles')
     if result is None:
         return {}
 
