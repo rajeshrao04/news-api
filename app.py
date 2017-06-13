@@ -39,6 +39,9 @@ def processRequest(req):
     if req.get("result").get("action") != "news.search":
         return {}
     baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=latest&apiKey=dda1592b3267447193fb1756b5746b0e"
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
     result = urlopen(baseurl).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
@@ -51,9 +54,6 @@ def makebaseurl(req):
     city = parameters.get("geo-city")
     if city is None:
         return None
-
-    
-
 def makeWebhookResult(data):
     query = data.get('query')
     if query is None:
@@ -90,8 +90,6 @@ def makeWebhookResult(data):
         # "contextOut": [],
         "source": "apiai-weather-webhook-sample"
     }
-
-
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
 
