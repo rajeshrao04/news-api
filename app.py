@@ -19,7 +19,7 @@ from flask import make_response
 app = Flask(__name__)
 
 
-@app.route('/webhook', methods=['GET'])
+@app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
 
@@ -36,7 +36,7 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") != "news.search":
+    if req.get("action") != "news.search":
         return {}
     baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=dda1592b3267447193fb1756b5746b0e"
     result = urlopen(baseurl).read()
