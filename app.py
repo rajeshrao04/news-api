@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
-import urllib
+from __future__ import print_function
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlparse, urlencode
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
+
 import json
 import os
 
@@ -12,50 +19,71 @@ from flask import make_response
 app = Flask(__name__)
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['GET'])
 def webhook():
     req = request.get_json(silent=True, force=True)
-
+    
     print("Request:")
     print(json.dumps(req, indent=4))
-
-    res = makeWebhookResult(req)
-
+    
+    res = processRequest(req)
+    
     res = json.dumps(res, indent=4)
-    print(res)
+    # print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
-def makeWebhookResult(req):
-    if req.get("result").get("action") != "shipping.cost":
+
+def processRequest(req):
+    if req.get("result").get("action") != "news.search":
         return {}
-    result = req.get("result")
-print(result)
-    parameters = result.get("parameters")
-    print(parameters)
-    zone = parameters.get("shipping-zone")
-    print(zone)
+    baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=dda1592b3267447193fb1756b5746b0e"
+    result = urlopen(baseurl).read()
+    data = json.loads(result)
+    res = makeWebhookResult(data)
+    return res
 
-    cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+def makeWebhookResult(data):
+    query = data.get('query')
+    if query is None:
+        return {}
+    
+    result = query.get('articles')
+    if result is None:
+        return {}
+    
+    channel = result.get('author')
+    if channel is None:
+        return {}
+    
+    item = channel.get('title')
+    location = channel.get('description')
+    units = channel.get('url')
+    if (location is None) or (item is None) or (units is None):
+        return {}
 
-    speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
 
-    print("Response:")
+    # print(json.dumps(item, indent=4))
+    
+    
+    speech = " latest news"+channel+"item"+""+location+""+"units"
+
+print("Response:")
     print(speech)
-
+    
     return {
         "speech": speech,
         "displayText": speech,
-        #"data": {},
+        # "data": data,
         # "contextOut": [],
-        "source": "apiai-onlinestore-shipping"
-    }
+        "source": "apiai-weather-webhook-sample"
+}
 
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-
-    print "Starting app on port %d" % port
-
-    app.run(debug=True, port=port, host='0.0.0.0')
+    
+    print("Starting app on port %d" % port)
+    
+    app.run(debug=False, port=port, host='0.0.0.0')
