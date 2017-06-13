@@ -46,29 +46,8 @@ def processRequest(req):
     return res
 
 
-def makebaseurl(req):
-    result = req.get("result")
 
 
-
-def makeWebhookResult(data):
-    
-    result = data.get('articles')
-    if result is None:
-        return {}
-
-    channel = result.get('author')
-    if channel is None:
-        return {}
-
-    item = channel.get('title')
-    location = channel.get('description')
-    units = channel.get('url')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
-
-    # print(json.dumps(item, indent=4))
 
     
     speech = " latest news"+channel+"item"+""+location+""+units
