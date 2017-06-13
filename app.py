@@ -36,14 +36,14 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     zone = parameters.get("sys.location")
 
-   // cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+    cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
 
-   // speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
+    speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
        localtime = time.localtime(time.time())
     print "Local current time :", localtime
 
-   // print("Response:")
-   // print(speech)
+    print("Response:")
+    print(speech)
 
     return {
         "speech": speech,
