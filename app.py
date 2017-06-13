@@ -19,7 +19,7 @@ from flask import make_response
 app = Flask(__name__)
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['GET'])
 def webhook():
     req = request.get_json(silent=True, force=True)
     
@@ -60,15 +60,17 @@ def makeWebhookResult(data):
     item = channel.get('title')
     location = channel.get('description')
     units = channel.get('url')
-   
+    if (location is None) or (item is None) or (units is None):
+        return {}
+
 
     # print(json.dumps(item, indent=4))
     
     
-    speech = " latest news"+channel+"item"+""+location+""+units
+    speech = " latest news"+channel+"item"+""+location+""+"units"
 
 print("Response:")
-    #print(speech)
+    print(speech)
     
     return {
         "speech": speech,
