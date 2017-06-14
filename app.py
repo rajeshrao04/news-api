@@ -41,7 +41,7 @@ def processRequest(req):
     baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=latest&apiKey=dda1592b3267447193fb1756b5746b0e"
     if yql_query is None:
         return {}
-    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    yql_url = baseurl + urlencode({'': yql_query}) + "&format=json"
     result = urlopen(baseurl).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
@@ -51,36 +51,36 @@ def processRequest(req):
 def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    city = parameters.get("")
+    city = parameters.get("news.search")
     if city is None:
         return None
 
     def makeWebhookResult(data):
-    query = data.get('query')
-    if query is None:
+    articles = data.get('articles')
+    if articles is None:
         return {}
 
-    result = query.get('results')
-    if result is None:
+    author = articles.get('author')
+    if author is None:
         return {}
 
-    channel = result.get('channel')
-    if channel is None:
+    title = author.get('title')
+    if title is None:
         return {}
 
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
+     description= articles.get('description')
+    url = articles.get('url')
+    #units = channel.get('units')
     
-    condition = item.get('condition')
-    if condition is None:
-        return {}
+    #condition = item.get('condition')
+    #if condition is None:
+       # return {}
 
     # print(json.dumps(item, indent=4))
 
-    speech = ""
+    speech = "latest news" +author.get()+""+title.get()+""+description.get()+""+url.get()
 
-    print("Response:")
+    #print("Response:")
     print(speech)
 
     return {
