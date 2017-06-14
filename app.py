@@ -52,8 +52,8 @@ def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
     #city = parameters.get("news.search")
-    if city is None:
-        return None
+    #if city is None:
+       # return None
 
 def makeWebhookResult(data):
     articles = data.get('articles')
