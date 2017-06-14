@@ -55,13 +55,13 @@ def makeYqlQuery(req):
     if city is None:
         return None
 
-    def makeWebhookResult(data):
-articles1 = data.get('articles')
-if articles is None:
+ def makeWebhookResult(data):
+     articles = data.get('articles')
+     if articles is None:
         return {}
 
-    author = articles.get('author')
-    if author is None:
+     author = articles.get('author')
+     if author is None:
         return {}
 
     title = articles.get('title')
