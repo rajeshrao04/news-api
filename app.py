@@ -56,15 +56,15 @@ def makeYqlQuery(req):
         return None
 
     def makeWebhookResult(data):
-    articles = data.get('articles')
-    if articles is None:
+articles = data.get('articles')
+if articles is None:
         return {}
 
     author = articles.get('author')
     if author is None:
         return {}
 
-    title = author.get('title')
+    title = articles.get('title')
     if title is None:
         return {}
 
