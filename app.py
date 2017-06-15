@@ -48,12 +48,12 @@ def processRequest(req):
     return res
 
 
-#def makeYqlQuery(req):
-   # result = req.get("result")
-   # parameters = result.get("parameters")
-    #city = parameters.get("news.search")
-    #if city is None:
-       # return None
+def makeYqlQuery(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    news = parameters.get("news.search")
+    if news is None:
+        return None
 
 def makeWebhookResult(res):
     articles = res.get('articles')
