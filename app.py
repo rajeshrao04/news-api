@@ -78,7 +78,7 @@ def makeWebhookResult(res):
 
     # print(json.dumps(item, indent=4))
 
-    speech = "latest news" +author.get()+""+title.get()+""+description.get()+""+url.get()
+    speech = "latest news" +author.get(articles)+""+title.get(articles)+""+description.get(articles)+""+url.get(articles)
 
     #print("Response:")
     print(speech)
@@ -88,7 +88,7 @@ def makeWebhookResult(res):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-news-search"
+        "source": "apiai-news.search"
     }
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
