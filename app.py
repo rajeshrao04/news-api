@@ -55,8 +55,8 @@ def processRequest(req):
     #if city is None:
        # return None
 
-def makeWebhookResult(data):
-    articles = data.get('articles')
+def makeWebhookResult(res):
+    articles = res.get('articles')
     if articles is None:
         return {}
 
