@@ -78,7 +78,7 @@ def makeWebhookResult(res):
 
     # print(json.dumps(item, indent=4))
 
-    speech = "latest news" +author.get(articles)+""+title.get(articles)+""+description.get(articles)+""+url.get(articles)
+    speech = "latest news" +author.get()+""+title.get()+""+description.get()+""+url.get()
 
     #print("Response:")
     print(speech)
@@ -91,7 +91,7 @@ def makeWebhookResult(res):
         "source": "apiai-news.search"
     }
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 5001))
 
     print("Starting app on port %d" % port)
 
