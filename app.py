@@ -38,7 +38,7 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "news.search":
         return {}
-    baseurl = ""http://timesofindia.indiatimes.com/india/day-after-uk-court-relief-ed-charges-vijay-mallya-others/articleshow/59152191.cms"
+    baseurl = "http://timesofindia.indiatimes.com/india/day-after-uk-court-relief-ed-charges-vijay-mallya-others/articleshow/59152191.cms"
     if yql_query is None:
         return {}
     yql_url = baseurl + urlencode({'': yql_query}) + "&format=json"
