@@ -88,7 +88,7 @@ def makeWebhookResult(res):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "apiai-news-search"
     }
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
