@@ -36,7 +36,7 @@ def webhook():
 
 
 def processRequest(req):
-    if req.get("result").get("action") != "news.search":
+    if req.get("result").get("action") = "news.search":
         return {}
     baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=60969da0a38e4cf1aad619158c413030"
     if yql_query is None:
