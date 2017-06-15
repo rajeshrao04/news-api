@@ -41,19 +41,19 @@ def processRequest(req):
     baseurl = "https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=60969da0a38e4cf1aad619158c413030"
     if yql_query is None:
         return {}
-    yql_url = baseurl + urlencode({'': yql_query}) + "&format=json"
+    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
 
 
-def makeYqlQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    news = parameters.get("news.search")
-    if news is None:
-        return None
+#def makeYqlQuery(req):
+    #result = req.get("result")
+    #parameters = result.get("parameters")
+    #news = parameters.get("news.search")
+    #if news is None:
+        #return None
 
 def makeWebhookResult(res):
     articles = res.get('articles')
