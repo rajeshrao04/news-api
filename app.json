@@ -3,5 +3,6 @@
   "description": "API.AI webhook demonstration",
   "repository": "https://github.com/api-ai/apiai-news.search",
   "logo": "http://xvir.github.io/img/apiai.png",
-  "keywords": ["api.ai", "natural language"]
+  "keywords": ["api.ai", "natural language"],
+  "status" : "pass"	
 }
